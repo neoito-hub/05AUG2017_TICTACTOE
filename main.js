@@ -1,13 +1,24 @@
-// start the game
-$('#start').click(function() {
-  console.log(' Game Started ');
-});
 // ttt or tictactoe array
 var ttt = [
   [null, null, null],
   [null, null, null],
   [null, null, null]
 ];
+var tttNull = [
+  [null, null, null],
+  [null, null, null],
+  [null, null, null]
+];
+var GMFORMAT = [
+  [1,0,1,0,1,0,1,0,1],
+  [1,1,0,1,0,1,0,1,0],
+  [1,0,0,1,0,1,0,1,0],
+  [1,1,0,0,1,1,0,0,1]
+];
+var GM;
+
+var team1 = {};
+var team2 = {};
 
 //  ttt = [
 //   [null, null, 'X'],
@@ -16,38 +27,56 @@ var ttt = [
 // ];
 // check which are the 2 teams
 
+// start the game
+$('#start').click(function() {
+  console.log(' Game Started ');
+
+  function copy(array) {
+    return array.map(function(arr) {
+      return arr.slice();
+    });
+  }
+
+  ttt = copy(tttNull);
+  registerTeamFunctions(demo, demo);
+  decideGameFormat(0);
+  var gameStatus = startGame();
+  if(gameStatus === 'GAME_OVER') {
+    return;
+  }
+});
 
 // register their respective functions
-var team1 = demo;
-var team2 = demo;
-
-// decide game mode
-var GM1 = [1,0,1,0,1,0,1,0,1];
-var GM2 = [1,1,0,1,0,1,0,1,0];
-var GM3 = [1,0,0,1,0,1,0,1,0];
-var GM4 = [1,1,0,0,1,1,0,0,1];
-
-var GM = GM1;
-
-// decide first turn
-for(var i = 0; i < GM.length; i++) {
-  // setTimeout(function() {
-    if(GM[i]) {
-      team1(ttt, 'X');
-    } else {
-      team2(ttt, 'O');
-    }
-    renderTTT(ttt);
-    if(isTTTComplete(ttt)){
-      break;
-    }
-  // }, 1000);
+function registerTeamFunctions(arg1, arg2) {
+  team1['function'] = arg1;
+  team2['function'] = arg2;
 }
 
-// loop start
-// team 1 chance
+function decideGameFormat(chosenIndex) {
+  GM = GMFORMAT[chosenIndex];
+}
 
-// validate TTT arr
+function startGame() {
+  for(var i = 0; i < GM.length; i++) {
+    if(GM[i]) {
+      team1['function'](ttt, 'X');
+    } else {
+      team2['function'](ttt, 'O');
+    }
+    renderTTT(ttt);
+    var winnerSymbol = isTTTComplete(ttt);
+    if(winnerSymbol) {
+      if(winnerSymbol === 'X') {
+        updateTeamPoints(team1, team2);
+      }
+      return 'GAME_OVER';
+    }
+  }
+}
+
+function updateTeamPoints (team1, team2) {
+  
+}
 
 // render TTT
 function renderTTT(ttt) {
@@ -59,7 +88,6 @@ function renderTTT(ttt) {
     }
   }
 }
-
 
 // decide continue or winner
 function isTTTComplete(ttt) {  
@@ -92,7 +120,3 @@ function isTTTComplete(ttt) {
     return false;
   }
 }
-
-// register score
-
-// loop end

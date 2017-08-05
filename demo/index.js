@@ -17,7 +17,6 @@ function demo(ttt, symbol) {
     }
   }
 
-  console.log(nullArray);
   var length = nullArray.length;
   var randomIndex = Math.floor(Math.random() * length);
 
