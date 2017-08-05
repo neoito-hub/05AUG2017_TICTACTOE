@@ -6,9 +6,22 @@
  * @returns {Array} The updated state of tictac board
  */
 function demo(ttt, symbol) {
-  return [
-    [null, null, null],
-    [null, symbol, null],
-    [null, null, null]
-  ];
+
+  var nullArray = [];
+  for(var i = 0; i < ttt.length; i++) {
+    var tttRow = ttt[i];
+    for(var j = 0; j < tttRow.length; j++) {
+      if(tttRow[j] == null) {
+        nullArray.push("" + i + j);
+      }
+    }
+  }
+
+  console.log(nullArray);
+  var length = nullArray.length;
+  var randomIndex = Math.floor(Math.random() * length);
+
+  var node = parseInt(nullArray[randomIndex]);
+  ttt[Math.floor(node/10)][Math.floor(node%10)] = symbol;
+  return ttt;
 }
