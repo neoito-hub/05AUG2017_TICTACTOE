@@ -38,9 +38,10 @@ $('#start').click(function() {
   }
 
   ttt = copy(tttNull);
+  renderTTT(ttt);
   registerTeamFunctions(demo, demo);
   decideGameFormat(0);
-  var gameStatus = startGame();
+  var gameStatus = startGame(0);
   if(gameStatus === 'GAME_OVER') {
     return;
   }
@@ -56,22 +57,31 @@ function decideGameFormat(chosenIndex) {
   GM = GMFORMAT[chosenIndex];
 }
 
-function startGame() {
-  for(var i = 0; i < GM.length; i++) {
-    if(GM[i]) {
-      team1['function'](ttt, 'X');
-    } else {
-      team2['function'](ttt, 'O');
-    }
-    renderTTT(ttt);
-    var winnerSymbol = isTTTComplete(ttt);
-    if(winnerSymbol) {
-      if(winnerSymbol === 'X') {
-        updateTeamPoints(team1, team2);
+function startGame(iteration) {
+  // var iteration = count;
+  if(iteration <= GM.length) {
+    setTimeout(function() {
+      if(GM[iteration]) {
+        team1['function'](ttt, 'X');
+      } else {
+        team2['function'](ttt, 'O');
       }
-      return 'GAME_OVER';
-    }
+      renderTTT(ttt);
+      var winnerSymbol = isTTTComplete(ttt);
+      if(winnerSymbol) {
+        if(winnerSymbol === 'X') {
+          updateTeamPoints(team1, team2);
+        }
+        // return 'GAME_OVER';
+      } else {
+        iteration = iteration + 1;
+        startGame(iteration);
+      }
+    }, 1000);
+  } else {
+    return 'GAME_OVER';
   }
+  
 }
 
 function updateTeamPoints (team1, team2) {
@@ -84,7 +94,11 @@ function renderTTT(ttt) {
     var tttRow = ttt[i];
     for(var j = 0; j < tttRow.length; j++) {
       let node = '#' + i + j;
-      $(node).text(tttRow[j]);
+      if(tttRow[j]){
+        $(node).text(tttRow[j]);
+      } else {
+        $(node).text('');
+      }
     }
   }
 }
@@ -106,11 +120,9 @@ function isTTTComplete(ttt) {
     var nodes = winningFormations[i];
     var result = areSymbolsInLine(nodes[0], nodes[1], nodes[2]);
     if(result) {
-      console.log('WON ' + result);
       return result
     }
   }
-  console.log('Continue Game Play');
   return false;
 
   function areSymbolsInLine(arg1, arg2, arg3) {
