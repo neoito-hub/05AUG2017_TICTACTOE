@@ -8,8 +8,8 @@ In-case of tie. Rules will be twisted (To be notified later)
 
 # Technology
 Team need to checkin single/multiple JS file under their folder. example
-Team titans will checkin under titans folder
-the JS file need to export a default function. THe function accepts 2 parameters
+Team titans will checkin under titans folder with index.js 
+the JS file need to have entry function example titans() / spartans() / x(). THe function accepts 2 parameters
 1. 2 dimensional array [[null, null, null], [null, null, null], [null, null, null]]
 2. Team's symbol 'X' or 'O'
 
