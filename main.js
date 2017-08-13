@@ -1,4 +1,6 @@
 // ttt or tictactoe array
+
+//. test
 var ttt = [
   [null, null, null],
   [null, null, null],
@@ -81,11 +83,11 @@ function startGame(iteration) {
   } else {
     return 'GAME_OVER';
   }
-  
+
 }
 
 function updateTeamPoints (team1, team2) {
-  
+
 }
 
 // render TTT
@@ -104,7 +106,7 @@ function renderTTT(ttt) {
 }
 
 // decide continue or winner
-function isTTTComplete(ttt) {  
+function isTTTComplete(ttt) {
   var winningFormations = [
     [ttt[0][0], ttt[0][1], ttt[0][2]],
     [ttt[1][0], ttt[1][1], ttt[1][2]],
